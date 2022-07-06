@@ -32,7 +32,10 @@ spec:
     - id: fetchBase
       name: Fetch source
       action: fetch:template
-      input: ${{ parameters.sourceRepoUrl }}
+      input:
+        url: ${{ parameters.sourceRepoUrl }}
+        values:
+          templateName: dotnet-feature-api-v1.0 # From metadata.name
 
     - id: debug
       name: Debug

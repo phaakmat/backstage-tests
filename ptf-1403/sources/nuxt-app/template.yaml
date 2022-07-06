@@ -2,8 +2,8 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: add-nuxt-app-v1.0
-  title: .NET project
-  description: Add a .NET 6 project to an existing repository
+  title: Nuxt app
+  description: Add a Nuxt app to an existing repository
 spec:
   owner: Team Platform
   type: api

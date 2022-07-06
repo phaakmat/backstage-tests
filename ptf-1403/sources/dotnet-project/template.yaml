@@ -1,0 +1,39 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: dotnet-project-v1.0
+  title: .NET project
+  description: Add a .NET 6 project to an existing repository
+spec:
+  owner: Team Platform
+  type: api
+  parameters:
+    - title: Choose the SOURCE component
+      properties:
+        sourceRepoUrl:
+          title: Source repository URL
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+    - title: Choose the TARGET repository
+      properties:
+        targetRepoUrl:
+          title: Target repository URL
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - github.com
+
+  steps:
+    - id: fetchBase
+      name: Fetch source
+      action: fetch:template
+      input: ${{ parameters.sourceRepoUrl }}
+
+    - id: debug
+      name: Debug
+      action: debug:log

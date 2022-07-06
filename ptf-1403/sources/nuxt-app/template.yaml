@@ -8,7 +8,7 @@ spec:
   owner: Team Platform
   type: api
   parameters:
-    - title: Choose the SOURCE component
+    - title: Choose the SOURCE template
       properties:
         sourceRepoUrl:
           title: Source component
@@ -18,16 +18,6 @@ spec:
             allowedKinds:
               - Template
             allowArbitraryValues: false
-
-    - title: Choose the SOURCE component
-      properties:
-        sourceRepoUrl:
-          title: Source repository URL
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
 
     - title: Choose the TARGET repository
       properties:
@@ -51,3 +41,6 @@ spec:
     - id: debug
       name: Debug
       action: debug:log
+      input:
+        message: |
+          ${{ parameters | dump }}

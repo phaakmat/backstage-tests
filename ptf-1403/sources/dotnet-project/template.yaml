@@ -11,6 +11,17 @@ spec:
     - title: Choose the SOURCE component
       properties:
         sourceRepoUrl:
+          title: Source component
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            allowedKinds:
+              - Template
+            allowArbitraryValues: false
+
+    - title: Choose the SOURCE component
+      properties:
+        sourceRepoUrl:
           title: Source repository URL
           type: string
           ui:field: RepoUrlPicker

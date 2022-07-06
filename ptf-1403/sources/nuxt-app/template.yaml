@@ -1,7 +1,7 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: add-dotnet-project-v1.0
+  name: add-nuxt-app-v1.0
   title: .NET project
   description: Add a .NET 6 project to an existing repository
 spec:

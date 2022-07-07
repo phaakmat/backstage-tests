@@ -53,6 +53,7 @@ spec:
       action: fetch:template
       input:
         url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/template
+        targetPath: target
         values:
           name: 'ProjectName'
 
@@ -61,10 +62,12 @@ spec:
       action: fetch:plain
       input:
         url: ${{ parameters.targetRepoUrl }}
+        targetPath: target
 
     - id: dockerProcessor
       name: Updating
       action: process:docker
       input:
-        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/Dockerfile.backstage.add }}
-        entityRef: ${{ parameters.sourceEntity }}
+        sourcePath: source
+        targetPath: target
+        dockerfile: Dockerfile.addDotnetProject

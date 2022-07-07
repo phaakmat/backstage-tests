@@ -1,0 +1,9 @@
+# https://hub.docker.com/_/microsoft-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+ARG PROJECT_NAME
+WORKDIR /target
+
+COPY /target .
+COPY /source .
+
+RUN dotnet sln add $RPOJECT_NAME/*.csproj

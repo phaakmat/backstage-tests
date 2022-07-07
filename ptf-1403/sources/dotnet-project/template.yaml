@@ -70,4 +70,4 @@ spec:
       input:
         sourcePath: source
         targetPath: target
-        dockerfile: Dockerfile.addDotnetProject
+        dockerfile: source/Dockerfile.addDotnetProject

@@ -30,6 +30,12 @@ spec:
               - github.com
 
   steps:
+    - id: debug
+      name: Debug
+      action: debug:log
+      input:
+        message: ${{ parameters | dump }}
+
     - id: fetchBase
       name: Fetch source
       action: fetch:template
@@ -37,12 +43,6 @@ spec:
         url: ${{ parameters.sourceEntity }}
         values:
           templateName: dotnet-feature-api-v1.0 # From metadata.name
-
-    - id: debug
-      name: Debug
-      action: debug:log
-      input:
-        message: ${{ parameters | dump }}
 
     - id: dockerProcessor
       name: Updating

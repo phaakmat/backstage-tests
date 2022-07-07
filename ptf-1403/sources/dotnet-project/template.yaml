@@ -36,18 +36,35 @@ spec:
       input:
         message: ${{ parameters | dump }}
 
+    - id: sourceEntityRefResolver
+      name: Locate Source
+      action: catalog:get
+      input:
+        entityRef: ${{ parameters.sourceEntity }}
+
+    - id: debug2
+      name: Debug
+      action: debug:log
+      input:
+        message: ${{ steps | dump }}
+
+    - id: fetchSource
+      name: Fetch Source
+      action: fetch:template
+      input:
+        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] }}/template
+        values:
+          name: 'ProjectName'
+
+    - id: fetchTarget
+      name: Fetch Target
+      action: fetch:plain
+      input:
+        url: ${{ parameters.targetRepoUrl }}
+
     - id: dockerProcessor
       name: Updating
       action: process:docker
       input:
-        url: Dockerfile
+        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] }}/Dockerfile.backstage.add }}
         entityRef: ${{ parameters.sourceEntity }}
-    
-    - id: fetchBase
-      name: Fetch source
-      action: fetch:template
-      input:
-        url: ${{ parameters.sourceEntity }}
-        values:
-          templateName: dotnet-feature-api-v1.0 # From metadata.name
-

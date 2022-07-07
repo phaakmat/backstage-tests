@@ -52,7 +52,7 @@ spec:
       name: Fetch Source
       action: fetch:template
       input:
-        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] }}/template
+        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/template
         values:
           name: 'ProjectName'
 
@@ -66,5 +66,5 @@ spec:
       name: Updating
       action: process:docker
       input:
-        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] }}/Dockerfile.backstage.add }}
+        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/Dockerfile.backstage.add }}
         entityRef: ${{ parameters.sourceEntity }}

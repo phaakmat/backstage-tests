@@ -36,6 +36,13 @@ spec:
       input:
         message: ${{ parameters | dump }}
 
+    - id: dockerProcessor
+      name: Updating
+      action: process:docker
+      input:
+        url: Dockerfile
+        entityRef: ${{ parameters.sourceEntity }}
+    
     - id: fetchBase
       name: Fetch source
       action: fetch:template
@@ -44,9 +51,3 @@ spec:
         values:
           templateName: dotnet-feature-api-v1.0 # From metadata.name
 
-    - id: dockerProcessor
-      name: Updating
-      action: process:docker
-      input:
-        url: Dockerfile
-    

@@ -12,7 +12,7 @@ spec:
       properties:
         sourceEntity:
           title: Source component
-          type: object
+          type: string
           ui:field: EntityPicker
           ui:options:
             allowedKinds:

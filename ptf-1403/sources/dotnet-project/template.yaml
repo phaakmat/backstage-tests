@@ -10,7 +10,7 @@ spec:
   parameters:
     - title: Choose the SOURCE component
       properties:
-        sourceRepoUrl:
+        sourceEntity:
           title: Source component
           type: string
           ui:field: EntityPicker
@@ -18,16 +18,6 @@ spec:
             allowedKinds:
               - Template
             allowArbitraryValues: false
-
-    - title: Choose the SOURCE component
-      properties:
-        sourceRepoUrl:
-          title: Source repository URL
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
 
     - title: Choose the TARGET repository
       properties:
@@ -44,7 +34,7 @@ spec:
       name: Fetch source
       action: fetch:template
       input:
-        url: ${{ parameters.sourceRepoUrl }}
+        url: ${{ parameters.sourceEntity }}
         values:
           templateName: dotnet-feature-api-v1.0 # From metadata.name
 

@@ -32,7 +32,7 @@ spec:
     - title: Name
       properties:
         name:
-          title: 
+          title: Name of new item
           type: string
           default: Bar
           ui:widget: hidden

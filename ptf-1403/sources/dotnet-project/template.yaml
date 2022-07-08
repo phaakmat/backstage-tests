@@ -63,23 +63,23 @@ spec:
 
     - id: fetchTarget
       name: Fetch Target
-      action: fetch:template
+      action: fetch:plain
       input:
         url: ${{ parameters.targetRepoUrl }}
         targetPath: target
-        copyWithoutRender: [ '*' ]
-        values:
-          name: ${{ parameters.name }}
+        #copyWithoutRender: [ '*' ]
+        #values:
+        #  name: ${{ parameters.name }}
 
     - id: fetchDockerfile
       name: Fetch Add Pipeline
-      action: fetch:template
+      action: fetch:plain
       input:
         url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
         targetPath: docker
-        copyWithoutRender: [ '*' ]
-        values:
-          name: ${{ parameters.name }}
+        #copyWithoutRender: [ '*' ]
+        #values:
+        #  name: ${{ parameters.name }}
 
     - id: debug3
       name: Debug

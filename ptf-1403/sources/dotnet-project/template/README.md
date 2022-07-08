@@ -1,1 +1,1 @@
-# add-dotnet-project
+# add-dotnet-project ${{ values.name }}

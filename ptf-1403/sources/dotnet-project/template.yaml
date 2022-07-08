@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: add-dotnet-project-v1.0
-  title: .NET project TEST-10
+  title: .NET project TEST-11
   description: Add a .NET 6 project to an existing repository
 spec:
   owner: Team Platform
@@ -71,7 +71,7 @@ spec:
       input:
         url: ${{ parameters.targetRepoUrl }}
         targetPath: target
-        # copyWithoutRender: [ '*' ]
+        copyWithoutRender: [ '*' ]
         values:
           name: ${{ parameters.name }}
 
@@ -79,9 +79,9 @@ spec:
       name: Fetch Add Pipeline
       action: fetch:template
       input:
-        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/Dockerfile.addDotnetProject
+        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
         targetPath: docker
-        # copyWithoutRender: [ '*' ]
+        copyWithoutRender: [ '*' ]
         values:
           name: ${{ parameters.name }}
 

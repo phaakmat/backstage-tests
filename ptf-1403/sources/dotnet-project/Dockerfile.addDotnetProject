@@ -6,4 +6,6 @@ WORKDIR /target
 COPY /target .
 COPY /source .
 
-RUN dotnet sln add $RPOJECT_NAME/*.csproj
+RUN ls -lR
+RUN echo $PROJECT_NAME
+RUN dotnet sln add $PROJECT_NAME/*.csproj

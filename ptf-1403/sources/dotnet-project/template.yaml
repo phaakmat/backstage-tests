@@ -94,3 +94,5 @@ spec:
         sourcePath: source
         targetPath: target
         dockerfile: docker/Dockerfile.addDotnetProject
+        buildArgs:
+          PROJECT_NAME: ${{ parameters.name }}

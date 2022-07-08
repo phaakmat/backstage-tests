@@ -2,7 +2,7 @@ apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
   name: add-dotnet-project-v1.0
-  title: .NET project TEST-11
+  title: .NET project TEST-12
   description: Add a .NET 6 project to an existing repository
 spec:
   owner: Team Platform
@@ -24,10 +24,6 @@ spec:
         targetRepoUrl:
           title: Target repository URL
           type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
 
     - title: Name
       properties:

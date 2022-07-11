@@ -78,7 +78,7 @@ spec:
     - id: debug3
       name: Debug
       action: debug:log 
-     input:
+      input:
         listWorkspace: true
         
     - id: dockerProcessor
@@ -90,6 +90,12 @@ spec:
         dockerfile: docker/Dockerfile.addDotnetProject
         buildArgs:
           PROJECT_NAME: ${{ parameters.name }}
+
+    - id: debug4
+      name: Debug
+      action: debug:log 
+      input:
+        listWorkspace: true
 
     - id: pullRequest
       name: Creating Pull Request

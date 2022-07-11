@@ -67,9 +67,6 @@ spec:
       input:
         url: ${{ parameters.targetRepoUrl }}
         targetPath: target
-        #copyWithoutRender: [ '*' ]
-        #values:
-        #  name: ${{ parameters.name }}
 
     - id: fetchDockerfile
       name: Fetch Add Pipeline
@@ -77,18 +74,15 @@ spec:
       input:
         url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
         targetPath: docker
-        #copyWithoutRender: [ '*' ]
-        #values:
-        #  name: ${{ parameters.name }}
 
     - id: debug3
       name: Debug
-      action: debug:log
-      input:
+      action: debug:log 
+     input:
         listWorkspace: true
         
     - id: dockerProcessor
-      name: Updating
+      name: Adding
       action: process:docker
       input:
         sourcePath: source
@@ -96,3 +90,14 @@ spec:
         dockerfile: docker/Dockerfile.addDotnetProject
         buildArgs:
           PROJECT_NAME: ${{ parameters.name }}
+
+    - id: pullRequest
+      name: Creating Pull Request
+      action: publish:github:pull-request
+      input:
+        repoUrl: ${{ parameters.targetRepoUrl }}
+        branchName: ${{ parameters.sourceEntity }}
+        title: Add ${{ steps.sourceEntityRefResolver.output.entity.name }}
+        description: Adds ${{ steps.sourceEntityRefResolver.output.entity.name }} from Backstage
+        sourcePath: target
+        targetPath: out

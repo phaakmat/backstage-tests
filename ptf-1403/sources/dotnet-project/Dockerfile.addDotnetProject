@@ -9,3 +9,6 @@ COPY /source .
 RUN ls -lR
 RUN echo $PROJECT_NAME
 RUN dotnet sln add $PROJECT_NAME/*.csproj
+
+FROM scratch AS export
+COPY --from=build /target /

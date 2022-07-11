@@ -45,9 +45,9 @@ spec:
       input:
         entityRef: ${{ parameters.sourceEntity }}
 
-    - id: targetRepoUrlResolver
+    - id: targetRepoUrlParser
       name: Build Repo URLs
-      action: createParseRepositoryUrlAction
+      action: parse-repository-url
       input:
         url: ${{ parameters.targetRepoUrl }}
 

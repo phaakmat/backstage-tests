@@ -31,7 +31,6 @@ spec:
           title: Name of new item
           type: string
           default: Bar
-          ui:widget: hidden
 
   steps:
     - id: debug
@@ -48,7 +47,7 @@ spec:
 
     - id: targetRepoUrlResolver
       name: Build Repo URLs
-      action: parse:url
+      action: createParseRepositoryUrlAction
       input:
         url: ${{ parameters.targetRepoUrl }}
 
@@ -71,7 +70,7 @@ spec:
       name: Fetch Target
       action: fetch:plain
       input:
-        url: ${{ steps.targetRepoUrlResolver.output.fullyQualifiedUrl }}
+        url: ${{ steps.targetRepoUrlParser.output.fullyQualifiedUrl }}
         targetPath: target
 
     - id: fetchDockerfile
@@ -107,7 +106,7 @@ spec:
       name: Creating Pull Request
       action: publish:github:pull-request
       input:
-        repoUrl: ${{ steps.targetRepoUrlResolver.output.repoUrl }}
+        repoUrl: ${{ steps.targetRepoUrlParser.output.repoUrl }}
         branchName: ${{ parameters.sourceEntity }}
         title: Add ${{ steps.sourceEntityRefResolver.output.entity.name }}
         description: Adds ${{ steps.sourceEntityRefResolver.output.entity.name }} from Backstage

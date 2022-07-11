@@ -86,9 +86,9 @@ spec:
       input:
         listWorkspace: true
     
-    - id: dockerProcessor
+    - id: dockerBuild
       name: Adding
-      action: process:docker
+      action: docker-build
       input:
         sourcePath: source
         targetPath: target

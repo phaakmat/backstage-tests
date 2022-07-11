@@ -1,14 +1,15 @@
 # https://hub.docker.com/_/microsoft-dotnet
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 ARG PROJECT_NAME
-WORKDIR /target
+ARG SOURCE_PATH
+ARG TARGET_PATH
+WORKDIR $TARGET_PATH
 
-COPY /target .
-COPY /source .
+COPY $TARGET_PATH .
+COPY $SOURCE_PATH .
 
-RUN ls -lR
-RUN echo $PROJECT_NAME
 RUN dotnet sln add $PROJECT_NAME/*.csproj
 
+# This target generates the files for output.
 FROM scratch AS export
-COPY --from=build /target /
+COPY --from=build $TARGET_PATH /

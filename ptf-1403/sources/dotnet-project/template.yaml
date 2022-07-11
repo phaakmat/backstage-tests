@@ -10,7 +10,7 @@ spec:
   parameters:
     - title: Choose the SOURCE component
       properties:
-        sourceEntity:
+        sourceEntityRef:
           title: Source component
           type: string
           ui:field: EntityPicker
@@ -39,11 +39,11 @@ spec:
       input:
         message: ${{ parameters | dump }}
 
-    - id: sourceEntityRefResolver
+    - id: sourceEntityGetter
       name: Locate Source
-      action: catalog:get
+      action: get-catalog-entity
       input:
-        entityRef: ${{ parameters.sourceEntity }}
+        entityRef: ${{ parameters.sourceEntityRef }}
 
     - id: targetRepoUrlParser
       name: Build Repo URLs
@@ -61,7 +61,7 @@ spec:
       name: Fetch Source
       action: fetch:template
       input:
-        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/template
+        url: ${{ steps.sourceEntityGetter.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/template
         targetPath: source
         values:
           name: ${{ parameters.name }}
@@ -77,7 +77,7 @@ spec:
       name: Fetch Add Pipeline
       action: fetch:plain
       input:
-        url: ${{ steps.sourceEntityRefResolver.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
+        url: ${{ steps.sourceEntityGetter.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
         targetPath: docker
 
     - id: debug3
@@ -107,8 +107,8 @@ spec:
       action: publish:github:pull-request
       input:
         repoUrl: ${{ steps.targetRepoUrlParser.output.repoUrl }}
-        branchName: ${{ parameters.sourceEntity }}
-        title: Add ${{ steps.sourceEntityRefResolver.output.entity.name }}
-        description: Adds ${{ steps.sourceEntityRefResolver.output.entity.name }} from Backstage
+        branchName: ${{ parameters.sourceEntityRef }}
+        title: Add ${{ steps.sourceEntityGetter.output.entity.name }}
+        description: Adds ${{ steps.sourceEntityGetter.output.entity.name }} from Backstage
         sourcePath: target
         targetPath: out

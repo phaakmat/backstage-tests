@@ -46,6 +46,12 @@ spec:
       input:
         entityRef: ${{ parameters.sourceEntity }}
 
+    - id: targetRepoUrlResolver
+      name: Build Repo URLs
+      action: parse:url
+      input:
+        url: ${{ parameters.targetRepoUrl }}
+
     - id: debug2
       name: Debug
       action: debug:log
@@ -65,7 +71,7 @@ spec:
       name: Fetch Target
       action: fetch:plain
       input:
-        url: ${{ parameters.targetRepoUrl }}
+        url: ${{ steps.targetRepoUrlResolver.output.fullyQualifiedUrl }}
         targetPath: target
 
     - id: fetchDockerfile
@@ -101,7 +107,7 @@ spec:
       name: Creating Pull Request
       action: publish:github:pull-request
       input:
-        repoUrl: ${{ parameters.targetRepoUrl }}
+        repoUrl: ${{ steps.targetRepoUrlResolver.output.repoUrl }}
         branchName: ${{ parameters.sourceEntity }}
         title: Add ${{ steps.sourceEntityRefResolver.output.entity.name }}
         description: Adds ${{ steps.sourceEntityRefResolver.output.entity.name }} from Backstage

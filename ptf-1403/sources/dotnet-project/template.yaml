@@ -77,10 +77,10 @@ spec:
 
     - id: debug3
       name: Debug
-      action: debug:log 
+      action: debug:log
       input:
         listWorkspace: true
-        
+    
     - id: dockerProcessor
       name: Adding
       action: process:docker

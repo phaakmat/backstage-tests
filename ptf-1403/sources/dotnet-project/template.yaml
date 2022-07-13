@@ -88,7 +88,7 @@ spec:
     
     - id: dockerBuild
       name: Adding
-      action: docker-build
+      action: build-k8s
       input:
         sourcePath: source
         targetPath: target

@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - add-source-to-target-job.yaml
+configMapGenerator:
+  - name: environment
+    env: env.properties
+patchesStrategicMerge:
+  - patch-processor-container.yaml
+  - patch-env-map.yaml
+

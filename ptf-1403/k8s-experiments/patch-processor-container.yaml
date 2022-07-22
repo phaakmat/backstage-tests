@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backstage-builder
+spec:
+  template:
+    spec:
+      initContainers:
+        - name: ingestor
+        - name: processor
+          image: mcr.microsoft.com/dotnet/sdk:6.0
+          command: [/bin/sh, -c]
+          args:
+            - |
+              env;
+              echo "using dollar sign: PROJECT_NAME=$PROJECT_NAME";
+              dotnet sln add "$PROJECT_NAME.csproj";
+              sleep 500
+

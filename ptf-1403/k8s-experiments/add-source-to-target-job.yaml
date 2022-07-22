@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: env-map
+data:
+  PROJECT_NAME: foo
+  SOURCE_PATH: foo_source
+  TARGET_PATH: foo_target
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: backstage-builder
+spec:
+  ttlSecondsAfterFinished: 600
+  activeDeadlineSeconds: 300
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: job-files
+          emptyDir: {}
+      initContainers:
+        - name: ingestor
+          image: alpine
+          volumeMounts:
+            - name: job-files
+              mountPath: /job
+          workingDir: /job
+          command: [/bin/sh, -c]
+          envFrom:
+            - configMapRef:
+                name: env-map
+          args:
+            - |
+              echo "Waiting to receive /job/INGEST_COMPLETED..."
+              timeout 2m sh -c 'until [ -f /job/INGEST_COMPLETED ]; do sleep 2; done;';
+              if [ -f /job/INGEST_COMPLETED ]; then
+                  echo "Ingest completed.";
+                  exit 0;
+              else
+                  echo "Did not receive /job/INGEST_COMPLETED";
+                  exit 1;
+              fi
+        - name: processor
+          image: alpine
+          volumeMounts:
+            - name: job-files
+              mountPath: /job
+          workingDir: /job
+          command: [/bin/sh, -c]
+          envFrom:
+            - configMapRef:
+                name: env-map
+          args:
+            - |
+              if [ -f /job/INGEST_COMPLETED ]; then
+                  sh /job/transform.sh;
+              else
+                  echo "Missing INGEST_COMPLETED!";
+                  exit 1;
+              fi
+      containers:
+        - name: exporter
+          image: alpine
+          volumeMounts:
+            - name: job-files
+              mountPath: /job
+          workingDir: /job
+          command: [/bin/sh, -c]
+          args:
+            - |
+              echo "Ready for download"
+              echo "Sleeping to allow files to be exported with 'kubectl cp'"
+              sleep 1m
+              echo "Exiting"
+

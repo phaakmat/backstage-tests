@@ -1,0 +1,21 @@
+{
+  "name": "k8s-experiments",
+  "version": "1.0.0",
+  "description": "K8s experiments",
+  "main": "dist/test.js",
+  "scripts": {
+    "build": "tsc --build",
+    "prestart": "npm run build",
+    "start": "node dist/test.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@kubernetes/client-node": "^0.17.0",
+    "minipass": "^3.2.1"
+  }
+}

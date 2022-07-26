@@ -73,12 +73,12 @@ spec:
         url: ${{ steps.targetRepoUrlParser.output.fullyQualifiedUrl }}
         targetPath: target
 
-    - id: fetchDockerfile
-      name: Fetch Add Pipeline
+    - id: fetchSourceMeta
+      name: Fetch Processing Configuration
       action: fetch:plain
       input:
         url: ${{ steps.sourceEntityGetter.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
-        targetPath: docker
+        targetPath: config
 
     - id: debug3
       name: Debug
@@ -93,7 +93,7 @@ spec:
         sourcePath: source
         targetPath: target
         processorImage: mcr.microsoft.com/dotnet/sdk:6.0
-        processorScript: processor.sh
+        processorScript: config/processor.sh
         env:
           PROJECT_NAME: ${{ parameters.name }}
 

@@ -73,8 +73,8 @@ spec:
         url: ${{ steps.targetRepoUrlParser.output.fullyQualifiedUrl }}
         targetPath: target
 
-    - id: fetchSourceMeta
-      name: Fetch Processing Configuration
+    - id: fetchProcessor
+      name: Fetch Processor
       action: fetch:plain
       input:
         url: ${{ steps.sourceEntityGetter.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/

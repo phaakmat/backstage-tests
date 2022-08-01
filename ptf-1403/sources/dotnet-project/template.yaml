@@ -94,6 +94,8 @@ spec:
         targetPath: target
         processorImage: mcr.microsoft.com/dotnet/sdk:6.0
         processorScript: config/processor.sh
+        k8sApiLogging: true
+        k8sConfigSource: loadFromDefault
         env:
           PROJECT_NAME: ${{ parameters.name }}
 

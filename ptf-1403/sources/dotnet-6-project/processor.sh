@@ -1,0 +1,13 @@
+mkdir -p $OUTPUT_PATH
+cp -r $TARGET_PATH/* $OUTPUT_PATH
+cp -r $SOURCE_PATH/* $OUTPUT_PATH
+
+(cd $OUTPUT_PATH && dotnet sln add $PROJECT_NAME/*.csproj)
+
+env
+pwd
+echo SOURCE_PATH=$SOURCE_PATH
+echo TARGET_PATH=$TARGET_PATH
+echo OUTPUT_PATH=$OUTPUT_PATH
+
+ls -lR /job

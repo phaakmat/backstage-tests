@@ -1,0 +1,118 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: add-dotnet-project-v1.0
+  title: .NET project TEST-16
+  description: Add a .NET 6 project to an existing repository
+spec:
+  owner: Team Platform
+  type: api
+  parameters:
+    - title: Choose the SOURCE component
+      properties:
+        sourceEntityRef:
+          title: Source component
+          type: string
+          ui:field: EntityPicker
+          ui:options:
+            allowedKinds:
+              - Template
+            allowArbitraryValues: false
+
+    - title: Choose the TARGET repository
+      properties:
+        targetRepoUrl:
+          title: Target repository URL
+          type: string
+
+    - title: Name
+      properties:
+        name:
+          title: Name of new item
+          type: string
+          default: Bar
+
+  steps:
+    - id: debug
+      name: Debug
+      action: debug:log
+      input:
+        message: ${{ parameters | dump }}
+
+    - id: sourceEntityGetter
+      name: Locate Source
+      action: get-catalog-entity
+      input:
+        entityRef: ${{ parameters.sourceEntityRef }}
+
+    - id: targetRepoUrlParser
+      name: Build Repo URLs
+      action: parse-repository-url
+      input:
+        url: ${{ parameters.targetRepoUrl }}
+
+    - id: debug2
+      name: Debug
+      action: debug:log
+      input:
+        message: ${{ steps | dump }}
+
+    - id: fetchSource
+      name: Fetch Source
+      action: fetch:template
+      input:
+        url: ${{ steps.sourceEntityGetter.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/template
+        targetPath: source
+        values:
+          name: ${{ parameters.name }}
+
+    - id: fetchTarget
+      name: Fetch Target
+      action: fetch:plain
+      input:
+        url: ${{ steps.targetRepoUrlParser.output.fullyQualifiedUrl }}
+        targetPath: target
+
+    - id: fetchProcessor
+      name: Fetch Processor
+      action: fetch:plain
+      input:
+        url: ${{ steps.sourceEntityGetter.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
+        targetPath: config
+
+    - id: debug3
+      name: Debug
+      action: debug:log
+      input:
+        listWorkspace: true
+    
+    - id: k8sProcessor
+      name: Processing
+      action: k8s-processor
+      input:
+        sourcePath: source
+        targetPath: target
+        processorImage: mcr.microsoft.com/dotnet/sdk:6.0
+        processorScript: config/processor.sh
+        k8sApiLogging: true
+        k8sConfigSource: loadFromDefault
+        env:
+          PROJECT_NAME: ${{ parameters.name }}
+
+    - id: debug4
+      name: Debug
+      action: debug:log
+      input:
+        message: steps.sourceEntityGetter.output.entity.name = ${{ steps.sourceEntityGetter.output.entity.name }}
+        listWorkspace: true
+
+    - id: pullRequest
+      name: Creating Pull Request
+      action: publish:github:pull-request
+      input:
+        repoUrl: ${{ steps.targetRepoUrlParser.output.repoUrl }}
+        branchName: ${{ steps.sourceEntityGetter.output.entity.metadata.name }}
+        title: Add ${{ steps.sourceEntityGetter.output.entity.metadata.name }}
+        description: Adds ${{ steps.sourceEntityGetter.output.entity.metadata.name }} from Backstage
+        sourcePath: target
+        targetPath: out

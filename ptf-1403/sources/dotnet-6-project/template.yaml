@@ -85,7 +85,7 @@ spec:
       action: debug:log
       input:
         listWorkspace: true
-    
+
     - id: k8sProcessor
       name: Processing
       action: k8s-processor
@@ -93,8 +93,8 @@ spec:
         sourcePath: source
         targetPath: target
         processorImage: mcr.microsoft.com/dotnet/sdk:6.0
-        processorScript: config/processor.sh
-        k8sApiLogging: true
+        processorScript: processor.sh
+        # k8sApiLogging: true
         k8sConfigSource: loadFromDefault
         env:
           PROJECT_NAME: ${{ parameters.name }}
@@ -103,7 +103,6 @@ spec:
       name: Debug
       action: debug:log
       input:
-        message: steps.sourceEntityGetter.output.entity.name = ${{ steps.sourceEntityGetter.output.entity.name }}
         listWorkspace: true
 
     - id: pullRequest

@@ -101,7 +101,7 @@ spec:
 
     - id: debug4
       name: Debug
-      action: debug:log 
+      action: debug:log
       input:
         listWorkspace: true
 
@@ -115,3 +115,4 @@ spec:
         description: Adds ${{ steps.sourceEntityGetter.output.entity.name }} from Backstage
         sourcePath: target
         targetPath: out
+        token: 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

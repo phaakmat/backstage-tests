@@ -78,7 +78,7 @@ spec:
       action: fetch:plain
       input:
         url: ${{ steps.sourceEntityGetter.output.entity.metadata.annotations["backstage.io/source-location"] | replace("url:", "", 1) }}/
-        targetPath: config
+        targetPath: processor
 
     - id: debug3
       name: Debug
@@ -93,7 +93,7 @@ spec:
         sourcePath: source
         targetPath: target
         processorImage: mcr.microsoft.com/dotnet/sdk:6.0
-        processorScript: processor.sh
+        processorScript: processor/processor.sh
         # k8sApiLogging: true
         k8sConfigSource: loadFromDefault
         env:

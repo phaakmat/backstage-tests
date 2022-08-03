@@ -115,4 +115,4 @@ spec:
         description: Adds ${{ steps.sourceEntityGetter.output.entity.name }} from Backstage
         sourcePath: target
         targetPath: out
-        token: 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
+        token: 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
